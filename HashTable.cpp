@@ -7,12 +7,7 @@
 *  initialize array of lists of WordEntry
 */
 HashTable::HashTable (int s) {
-  WordEntry* arr[s];
-}
-
-int HashTable::getSize()
-{
-  return this->size;
+  hashTable = new list<WordEntry>[s];
 }
 
 
@@ -23,25 +18,8 @@ int HashTable::getSize()
 *  ensure array index doesn't go out of bounds
 */
 int HashTable::computeHash(const string &s) {
-  /*
   int sizeOfString = s.size();
-  int hashIndex = sizeOfString % this->getSize();
-
-  if ()
-  */
-  int hashIndex = 0;
-  int sizeOfString = s.size();
-  for (int i = 0; i < sizeOfString; i++)
-  {
-    if (s.at(i) != ' ')
-    {
-      ++hashIndex;
-    }
-  }
-  if (hashIndex > this->getSize())
-  {
-    return -1;
-  }
+  int hashIndex = sizeOfString % size;
 
   return hashIndex;
 }
@@ -55,7 +33,18 @@ int HashTable::computeHash(const string &s) {
 *   appropriate array index
 */
 void HashTable::put(const string &s, int score) {
-	 
+	int putIndex = computeHash(s);
+  for (auto i = hashTable[putIndex].begin(); i != hashTable[putIndex].end(); ++i)
+  {
+    if (i->getWord() == s)
+    {
+      i->addNewAppearance(score);
+    }
+
+  }
+  WordEntry *newEntry = new WordEntry(s, score);
+  hashTable[putIndex].push_back(*newEntry);
+
 }
 
 /* getAverage
@@ -68,7 +57,23 @@ void HashTable::put(const string &s, int score) {
 */
 
 double HashTable::getAverage(const string &s) {
-
+  int avgIndex = computeHash(s);
+  double avgScore = 0;
+  if (contains(s))
+  {
+    for (auto i = hashTable[avgIndex].begin(); i != hashTable[avgIndex].end(); ++i)
+    {
+      if (i->getWord() == s)
+      {
+        avgScore = i -> getAverage();
+      }
+      return avgScore;
+    }
+  }
+  
+  
+  return 2.0;
+  
 }
 
 /* contains
@@ -77,5 +82,14 @@ double HashTable::getAverage(const string &s) {
 *         false if word is not in the hash table
 */
 bool HashTable::contains(const string &s) {
+  int containIndex = computeHash(s);
+  for (auto i = hashTable[containIndex].begin(); i != hashTable[containIndex].end(); ++i)
+  {
+    if (i->getWord() == s)
+    {
+      return true;
+    }
+  }
 
+  return false;
 }

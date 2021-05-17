@@ -13,7 +13,6 @@ class HashTable {
  private:
 	list<WordEntry> *hashTable;
 	int size;
-  int getSize();
 
  public:
 	HashTable(int);
