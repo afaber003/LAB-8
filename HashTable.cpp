@@ -22,8 +22,23 @@ HashTable::HashTable (int s) {
 *  ensure array index doesn't go out of bounds
 */
 int HashTable::computeHash(const string &s) {
-  int sizeOfString = s.size();
-  int hashIndex = sizeOfString % size;
+  /*
+    stringHash = InitialValue 
+
+    for (each character strChar in key) {
+        stringHash = (stringHash * HashMultiplier) + strChar
+    }
+
+    return stringHash % N
+  */
+  int stringHash = 0;
+  for (unsigned int i = 0; i < s.size(); i++)
+  {
+    stringHash = (stringHash * 1) + s.at(i);
+  }
+  //int sizeOfString = s.size();
+  //int hashIndex = sizeOfString % size;
+  int hashIndex = stringHash % size;
 
   return hashIndex;
 }
